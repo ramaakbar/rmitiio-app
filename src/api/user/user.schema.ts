@@ -14,12 +14,6 @@ const paramsId = {
   }),
 };
 
-const paramsUsername = {
-  params: object({
-    username: string(),
-  }),
-};
-
 export const getUsersWithQuerySchema = z.object({
   query: object({
     limit: string().optional(),
@@ -37,11 +31,6 @@ export const updateUserByIdSchema = z.object({
   ...paramsId,
 });
 
-export const getUserByUsernameSchema = z.object({
-  ...paramsUsername,
-});
-
 export type GetUsersWithQuery = z.infer<typeof getUsersWithQuerySchema>;
 export type GetUserByIdInput = z.infer<typeof getUserByIdSchema>;
 export type UpdateUserByIdInput = z.infer<typeof updateUserByIdSchema>;
-export type GetUserByUsernameInput = z.infer<typeof getUserByUsernameSchema>;

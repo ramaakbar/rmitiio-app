@@ -4,7 +4,6 @@ import prisma from "../../utils/prisma";
 import bcrypt from "bcrypt";
 import {
   GetUserByIdInput,
-  GetUserByUsernameInput,
   GetUsersWithQuery,
   UpdateUserByIdInput,
 } from "./user.schema";
@@ -149,41 +148,6 @@ export async function updateUserByIdHandler(
 
     res.status(200).json({
       data: updatedUser,
-    });
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      return res.status(400).json({
-        message: error.message,
-      });
-    }
-    res.status(500).json({ message: "There was an error" });
-  }
-}
-
-export async function getUserByUsernameHandler(
-  req: Request<GetUserByUsernameInput["params"]>,
-  res: Response
-) {
-  try {
-    const username = req.params.username;
-    const user = await prisma.user.findFirst({
-      where: {
-        username: username,
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        picture: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-
-    if (!user) return res.status(404).json({ message: "user not found" });
-
-    res.status(200).json({
-      data: user,
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

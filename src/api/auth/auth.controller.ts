@@ -39,7 +39,7 @@ export async function registerHandler(
   } catch (error: any) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       return res.status(400).json({
-        error: error.message,
+        message: error.message,
       });
     }
     res.status(500).json({ message: "There was an error" });

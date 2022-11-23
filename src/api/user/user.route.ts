@@ -5,29 +5,21 @@ import {
   getUsersHandler,
   getUserByIdHandler,
   updateUserByIdHandler,
-  getUserByUsernameHandler,
 } from "./user.controller";
 import {
   getUsersWithQuerySchema,
   getUserByIdSchema,
   updateUserByIdSchema,
-  getUserByUsernameSchema,
 } from "./user.schema";
 
 const router = express.Router();
 
-router.get("/users", validate(getUsersWithQuerySchema), getUsersHandler);
-router.get("/users/:userId", validate(getUserByIdSchema), getUserByIdHandler); // masalah
+router.get("/", validate(getUsersWithQuerySchema), getUsersHandler);
+router.get("/:userId", validate(getUserByIdSchema), getUserByIdHandler);
 router.patch(
-  "/users/:userId",
+  "/:userId",
   [verifyJWT, validate(updateUserByIdSchema)],
   updateUserByIdHandler
-);
-
-router.get(
-  "/:username",
-  validate(getUserByUsernameSchema),
-  getUserByUsernameHandler
 );
 
 export = router;

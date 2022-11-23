@@ -44,7 +44,7 @@ router.delete(
   deletePostHandler
 );
 router.get("/posts/:postId", validate(getPostSchema), getPostHandler);
-// pindahin ke /posts aja kyknya
+
 router.get(
   "/:username/posts",
   validate(getUserPostsSchema),

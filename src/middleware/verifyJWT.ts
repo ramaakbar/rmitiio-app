@@ -3,7 +3,6 @@ import jwt, { Secret } from "jsonwebtoken";
 
 const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
   const cookies = req.cookies;
-  console.log(cookies);
 
   if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
 
