@@ -1,11 +1,14 @@
 {
-  "name": "rmtiio-api",
+  "name": "rmitiio-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "seed": "npx prisma db seed"
+    "migrate": "npx prisma migrate dev --name initMigration && npx prisma generate",
+    "push": "npx prisma db push",
+    "seed": "npx prisma db seed",
+    "build": "tsc"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seeder.ts"

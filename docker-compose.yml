@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  rmitiio-rest-api:
+    container_name: rest-api
+    restart: unless-stopped
+    env_file: .env
+    build:
+      context: ./
+    ports:
+      - 4000:4000
