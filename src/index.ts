@@ -5,6 +5,8 @@ import cors from "cors";
 import routes from "./routes";
 import responseLogger from "./middleware/responseLogger";
 import swaggerDocs from "./utils/swagger";
+import prisma from "./utils/prisma";
+import checkDbConnect from "./utils/checkDbConnect";
 
 const app = express();
 dotenv.config();
@@ -22,4 +24,5 @@ app.use("/api", routes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  checkDbConnect();
 });
