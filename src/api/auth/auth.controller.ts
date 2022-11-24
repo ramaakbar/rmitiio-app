@@ -63,7 +63,7 @@ export async function loginHandler(
     });
 
     if (!foundUser)
-      return res.status(401).json({ message: "Unauthorized, email not found" });
+      return res.status(404).json({ message: "Unauthorized, email not found" });
 
     const passwordMatch = await bcrypt.compare(password, foundUser.password);
 
@@ -118,7 +118,8 @@ export async function refreshHandler(req: Request, res: Response) {
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET as Secret,
       async (err: any, decoded: any) => {
-        if (err) return res.status(403).json({ message: "Forbidden" });
+        if (err)
+          return res.status(403).json({ message: "Access Token Expired" });
 
         const foundUser = await prisma.user.findFirst({
           where: {
@@ -128,7 +129,7 @@ export async function refreshHandler(req: Request, res: Response) {
 
         if (!foundUser)
           return res
-            .status(401)
+            .status(404)
             .json({ message: "Unauthorized, email not found" });
 
         const accessToken = jwt.sign(

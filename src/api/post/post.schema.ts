@@ -4,8 +4,8 @@ const payload = {
   body: object({
     content: string({
       required_error: "Content is required",
-    }).max(200, {
-      message: "Content must be 100 or fewer characters long",
+    }).max(300, {
+      message: "Content must be 300 or fewer characters long",
     }),
   }),
 };

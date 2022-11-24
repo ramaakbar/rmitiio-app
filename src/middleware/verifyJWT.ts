@@ -19,7 +19,7 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
     token,
     process.env.ACCESS_TOKEN_SECRET as Secret,
     (err: any, decoded: any) => {
-      if (err) return res.status(403).json({ message: "Forbidden" });
+      if (err) return res.status(403).json({ message: "Access Token Expired" });
       req.user = decoded.user;
       next();
     }
