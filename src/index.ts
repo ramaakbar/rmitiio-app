@@ -5,7 +5,6 @@ import cors from "cors";
 import routes from "./routes";
 import responseLogger from "./middleware/responseLogger";
 import swaggerDocs from "./utils/swagger";
-import prisma from "./utils/prisma";
 import checkDbConnect from "./utils/checkDbConnect";
 
 const app = express();
@@ -23,6 +22,6 @@ swaggerDocs(app, PORT as number);
 app.use("/api", routes);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running at http://localhost:${PORT}/api`);
   checkDbConnect();
 });
