@@ -6,17 +6,6 @@ import commentRoutes from "./api/comment/comment.route";
 
 const router = express.Router();
 
-/**
- * @openapi
- * /api:
- *  get:
- *     tags:
- *     - Default
- *     description: The default route for the api
- *     responses:
- *       200:
- *         description: Rmittio rest api
- */
 router.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Rmitiio rest api " });
 });

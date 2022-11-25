@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use(responseLogger);
 
-swaggerDocs(app, PORT as number);
+swaggerDocs(app);
 
 app.use("/api", routes);
 
