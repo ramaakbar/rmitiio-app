@@ -22,6 +22,10 @@ const commentIdParams = {
   }),
 };
 
+export const getCommentsByPostIdSchema = z.object({
+  ...postIdParams,
+});
+
 export const createCommentSchema = z.object({
   ...payload,
   ...postIdParams,
@@ -36,6 +40,9 @@ export const deleteCommentSchema = z.object({
   ...commentIdParams,
 });
 
+export type GetCommentsByPostIdInput = z.infer<
+  typeof getCommentsByPostIdSchema
+>;
 export type CreateCommentInput = z.infer<typeof createCommentSchema>;
 export type UpdateCommentInput = z.infer<typeof updateCommentSchema>;
 export type DeleteCommentInput = z.infer<typeof deleteCommentSchema>;

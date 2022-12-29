@@ -69,14 +69,15 @@ export async function getPostsCursorHandler(
   res: Response
 ) {
   try {
-    const limit = parseInt(req.query.limit as string) || 10;
-    const cursor = req.query.cursor || null;
+    const limit = parseInt(req.query.limit as string) || 8;
+    const cursor = parseInt(req.query.cursor as string) || null;
 
     const posts = await prisma.post.findMany({
       orderBy: {
         createdAt: "desc",
       },
       include: {
+        user: true,
         comments: {
           orderBy: {
             createdAt: "desc",
@@ -85,12 +86,12 @@ export async function getPostsCursorHandler(
       },
       skip: cursor ? 1 : undefined,
       take: limit,
-      cursor: cursor ? { createdAt: cursor } : undefined,
+      cursor: cursor ? { id: cursor } : undefined,
     });
 
     res.status(200).json({
       pagination: {
-        nextCursor: posts[limit - 1]?.createdAt ?? "",
+        nextCursor: posts[limit - 1]?.id ?? undefined,
       },
       data: posts,
     });
@@ -221,6 +222,7 @@ export async function getPostHandler(
         id: postId,
       },
       include: {
+        user: true,
         comments: {
           orderBy: {
             createdAt: "desc",
@@ -244,13 +246,13 @@ export async function getPostHandler(
 
 // get user post
 
-export async function getUserPostHandler(
+export async function getUserPostsHandler(
   req: Request<GetUserPostsInput["params"], {}, {}, GetUserPostsInput["query"]>,
   res: Response
 ) {
   try {
     const { username } = req.params;
-    const limit = parseInt(req.query.limit as string) || 10;
+    const limit = parseInt(req.query.limit as string) || 8;
     const cursor = parseInt(req.query.cursor as string) || null;
 
     const user = await prisma.user.findFirst({
@@ -269,6 +271,7 @@ export async function getUserPostHandler(
         userId: user?.id,
       },
       include: {
+        user: true,
         comments: {
           orderBy: {
             createdAt: "desc",
@@ -282,9 +285,9 @@ export async function getUserPostHandler(
 
     res.status(200).json({
       pagination: {
-        nextCursor: posts[limit - 1]?.id ?? "",
+        nextCursor: posts[limit - 1]?.id ?? undefined,
       },
-      data: posts,
+      data: posts ?? undefined,
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

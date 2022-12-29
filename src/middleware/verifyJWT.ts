@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import jwt, { Secret } from "jsonwebtoken";
 
 const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
-  const cookies = req.cookies;
+  // const cookies = req.cookies;
 
-  if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
+  // if (!cookies?.refreshToken)
+  //   return res.status(401).json({ message: "Unauthorized, no refresh token" });
 
   const authHeader =
     req.headers.authorization || (req.headers.Authorization as string);

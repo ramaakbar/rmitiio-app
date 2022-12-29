@@ -8,7 +8,7 @@ import {
   updatePostHandler,
   deletePostHandler,
   getPostHandler,
-  getUserPostHandler,
+  getUserPostsHandler,
 } from "./post.controller";
 import {
   getPostsOffsetPaginateSchema,
@@ -48,7 +48,7 @@ router.get("/posts/:postId", validate(getPostSchema), getPostHandler);
 router.get(
   "/:username/posts",
   validate(getUserPostsSchema),
-  getUserPostHandler
+  getUserPostsHandler
 );
 
 export = router;

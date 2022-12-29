@@ -5,15 +5,22 @@ import {
   createCommentHandler,
   updateCommentHandler,
   deleteCommentHandler,
+  getCommentsByPostIdHandler,
 } from "./comment.controller";
 import {
   createCommentSchema,
   updateCommentSchema,
   deleteCommentSchema,
+  getCommentsByPostIdSchema,
 } from "./comment.schema";
 
 const router = express.Router();
 
+router.get(
+  "/:postId",
+  [validate(getCommentsByPostIdSchema)],
+  getCommentsByPostIdHandler
+);
 router.post(
   "/:postId",
   [verifyJWT, validate(createCommentSchema)],

@@ -55,7 +55,6 @@ export async function loginHandler(
 ) {
   try {
     const { email, password } = req.body;
-
     const foundUser = await prisma.user.findFirst({
       where: {
         email,
@@ -72,23 +71,24 @@ export async function loginHandler(
         .status(401)
         .json({ message: "Unauthorized, wrong credentials" });
 
+    const { password: userPassword, ...userData } = foundUser;
+
     const accessToken = jwt.sign(
-      { user: foundUser },
+      { user: userData },
       process.env.ACCESS_TOKEN_SECRET as Secret,
       { expiresIn: process.env.ACCESS_TOKEN_Ttl } // 10 sec ntar klo udh kelar ganti jadi 15m
     );
 
     const refreshToken = jwt.sign(
-      { user: foundUser },
+      { user: userData },
       process.env.REFRESH_TOKEN_SECRET as Secret,
       { expiresIn: process.env.REFRESH_TOKEN_Ttl }
     );
 
-    res.cookie("jwt", refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      // secure: true,
+      secure: true,
       sameSite: "none",
-      // maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expiry: set to match rT
       maxAge: parseInt(process.env.MAX_AGE_COOKIES_IN_MS as string), // cookie expiry: set to match rT
     });
 
@@ -110,16 +110,17 @@ export async function refreshHandler(req: Request, res: Response) {
   try {
     const cookies = req.cookies;
 
-    if (!cookies?.jwt) return res.status(401).json({ message: "Unauthorized" });
+    if (!cookies?.refreshToken)
+      return res.status(401).json({ message: "Unauthorized" });
 
-    const refreshToken = cookies.jwt;
+    const refreshToken = cookies.refreshToken;
 
     jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN_SECRET as Secret,
       async (err: any, decoded: any) => {
         if (err)
-          return res.status(403).json({ message: "Access Token Expired" });
+          return res.status(403).json({ message: "Refresh Token Expired" });
 
         const foundUser = await prisma.user.findFirst({
           where: {
@@ -157,9 +158,13 @@ export async function refreshHandler(req: Request, res: Response) {
 export async function logoutHandler(req: Request, res: Response) {
   const cookies = req.cookies;
 
-  if (!cookies?.jwt) return res.sendStatus(204); // no content
+  if (!cookies?.refreshToken) return res.sendStatus(204); // no content
 
-  res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
 
   res.json({ message: "Cookies cleared" });
 }

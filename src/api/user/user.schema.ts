@@ -22,6 +22,12 @@ export const getUsersWithQuerySchema = z.object({
   }),
 });
 
+export const getUserByUsernameSchema = z.object({
+  params: object({
+    username: string(),
+  }),
+});
+
 export const getUserByIdSchema = z.object({
   ...paramsId,
 });
@@ -32,5 +38,6 @@ export const updateUserByIdSchema = z.object({
 });
 
 export type GetUsersWithQuery = z.infer<typeof getUsersWithQuerySchema>;
+export type GetUserByUsernameInput = z.infer<typeof getUserByUsernameSchema>;
 export type GetUserByIdInput = z.infer<typeof getUserByIdSchema>;
 export type UpdateUserByIdInput = z.infer<typeof updateUserByIdSchema>;
