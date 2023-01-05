@@ -4,8 +4,8 @@ import { PostInput, postSchema } from "../schemas/postSchema";
 import { UseMutationResult } from "@tanstack/react-query";
 import { PostType } from "../postTypes";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import { CommentType } from "../../comment/commentTypes";
-import { useEffect, useState } from "react";
+import { PhotoIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 
 type PostFormProps = {
   token: string | undefined;
@@ -56,7 +56,6 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
       className="mb-5 flex w-full flex-col space-x-5 space-y-3 border-b px-4 pb-5"
       onSubmit={handleSubmit(onSubmitHandle)}
     >
-      {errors?.content?.message?.toString()}
       <textarea
         {...register("content")}
         onKeyPress={(e) => {
@@ -65,6 +64,10 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
         placeholder={label}
         className="rounded-md bg-grey-50 px-4 py-2 text-grey-800 focus:outline-none"
       ></textarea>
+      <span className="text-red-500">
+        {errors?.content?.message?.toString()}
+      </span>
+
       {pic && (
         <div className="relative">
           <div className="absolute top-0 left-0 m-2 rounded-full bg-grey-700/50 p-1 hover:bg-grey-600">
@@ -75,11 +78,19 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
       )}
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
+          <label
+            htmlFor="picture"
+            className="cursor-pointer rounded-md p-1 hover:bg-grey-100"
+          >
+            <PhotoIcon className="h-6 w-6" />
+          </label>
           <input
             {...register("picture")}
+            id="picture"
             type="file"
             accept="image/*"
             onChange={loadImagePreview}
+            className="hidden"
           />
           <span className="text-sm text-red-500">
             {errors?.picture?.message?.toString()}
@@ -88,9 +99,9 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
         <button
           type="submit"
           disabled={mutation.isLoading}
-          className="rounded-md bg-grey-900 px-4 py-2 font-medium text-white hover:bg-grey-800 disabled:cursor-not-allowed"
+          className="disabled rounded-md bg-grey-900 px-4 py-2 font-medium text-white hover:bg-grey-800"
         >
-          Post
+          {mutation.isLoading ? "Posting..." : "Post"}
         </button>
       </div>
     </form>

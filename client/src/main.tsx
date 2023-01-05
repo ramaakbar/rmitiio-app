@@ -68,7 +68,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <ToastContainer autoClose={4000} theme="light" position="bottom-right" />
+      <ToastContainer autoClose={4000} theme="light" position="top-right" />
     </QueryClientProvider>
   </React.StrictMode>
 );

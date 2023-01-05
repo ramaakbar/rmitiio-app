@@ -16,7 +16,7 @@ export default function Post({ post }: PostProps) {
       className="flex flex-row space-x-3 rounded-md bg-grey-50 px-4 py-3 hover:bg-grey-100"
     >
       <img
-        src="./placeholder_profile.jpeg"
+        src={post.user.picture ?? ""}
         alt=""
         className="h-10 w-10 rounded-full"
       />

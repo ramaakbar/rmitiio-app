@@ -10,26 +10,13 @@ export const useRegister = () => {
   return useMutation({
     mutationFn: (registerInput: RegisterInputWithoutPassConf) =>
       registerUserFn(registerInput),
-    onMutate: () => {
-      const notif = toast.loading("Registering User...");
-      return notif;
-    },
-    onSuccess: (data, _, toastId) => {
-      toast.update(toastId as number, {
-        render: "Successfuly Register",
-        type: "success",
-        isLoading: false,
-        autoClose: 4000,
-      });
+    onSuccess: (data, _) => {
+      toast.success("Successfully Register");
       closeModal();
     },
-    onError: (error: any, _, toastId) => {
-      toast.update(toastId as number, {
-        render: `There was an error, ${error.response.data.message}`,
-        type: "error",
-        isLoading: false,
-        autoClose: 4000,
-      });
+    onError: (error: any, _) => {
+      const msg = error?.response?.data?.message ?? "";
+      toast.error(`There was an error, ${msg}`);
     },
   });
 };

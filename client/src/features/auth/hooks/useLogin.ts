@@ -11,27 +11,14 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: (loginInput: LoginInput) => loginUserFn(loginInput),
-    onMutate: () => {
-      const notif = toast.loading("Logging in...");
-      return notif;
-    },
-    onSuccess: (data, _, toastId) => {
+    onSuccess: (data, _) => {
       setToken(data.accessToken);
-      toast.update(toastId as number, {
-        render: "Successfuly Login",
-        type: "success",
-        isLoading: false,
-        autoClose: 4000,
-      });
+      toast.success("Successfully Login");
       closeModal();
     },
-    onError: (error: any, _, toastId) => {
-      toast.update(toastId as number, {
-        render: `There was an error, ${error.response.data.message}`,
-        type: "error",
-        isLoading: false,
-        autoClose: 4000,
-      });
+    onError: (error: any, _) => {
+      const msg = error?.response?.data?.message ?? "";
+      toast.error(`There was an error, ${msg}`);
     },
   });
 };

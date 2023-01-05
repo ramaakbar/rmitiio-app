@@ -25,6 +25,7 @@ export default function Home() {
       <PostForm
         label="What's on your mind today?"
         token={token}
+        // @ts-ignore
         mutation={mutation}
       />
       <PostList

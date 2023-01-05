@@ -9,7 +9,7 @@ export default function UserProfile({ user }: UserProfilePage) {
     <div className="mb-5 border-b pb-5">
       <div className="flex flex-col items-center space-y-2">
         <img
-          src="./placeholder_profile.jpeg"
+          src={user.picture ?? ""}
           alt=""
           className="h-16 w-16 rounded-full"
         />

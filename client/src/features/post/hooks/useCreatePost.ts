@@ -10,21 +10,11 @@ export const useCreatePost = (token: string | undefined) => {
 
   return useMutation({
     mutationFn: (postInput: FormData) => createPost(postInput, token),
-    onMutate: () => {
-      const notif = toast.loading("Posting...");
-      return notif;
-    },
-    onSuccess: (data, _, toastId) => {
+    onSuccess: (data, _) => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      toast.update(toastId as number, {
-        render: "Post Created",
-        type: "success",
-        isLoading: false,
-        autoClose: 4000,
-        closeButton: true,
-      });
+      toast.success("Post created");
     },
-    onError: (error: any, _, toastId) => {
+    onError: (error: any, _) => {
       let msg = "error";
 
       if (error.response.data.message === "Access Token Expired") {
@@ -35,12 +25,7 @@ export const useCreatePost = (token: string | undefined) => {
       } else {
         msg = "server error";
       }
-      toast.update(toastId as number, {
-        render: msg,
-        type: "error",
-        isLoading: false,
-        autoClose: 4000,
-      });
+      toast.error(`There was an error, ${msg}`);
     },
   });
 };

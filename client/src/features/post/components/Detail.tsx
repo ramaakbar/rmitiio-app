@@ -12,7 +12,7 @@ export default function Detail({ post }: DetailProps) {
       <div className="flex flex-col space-y-1">
         <div className="flex flex-row items-center space-x-1">
           <img
-            src="../../placeholder_profile.jpeg"
+            src={post.user.picture ?? ""}
             alt=""
             className="h-10 w-10 rounded-full"
           />

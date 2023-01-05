@@ -1,23 +1,17 @@
-FROM node:16
+FROM node
 
-RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+WORKDIR /app
 
-ADD package.json /tmp/package.json
+COPY package.json .
 
-ADD pnpm-lock.yaml /tmp/pnpm-lock.yaml
+RUN npm install
 
-RUN rm -rf build
-
-RUN cd /tmp && pnpm install
-
-ADD ./ /src
-
-RUN rm -rf src/node_modules && cp -a /tmp/node_modules /src/
-
-WORKDIR /src
+COPY . .
 
 RUN npx prisma generate
 
-RUN pnpm build
+EXPOSE 8080
+
+RUN npm run build
 
 CMD ["node", "build/src/index.js"]

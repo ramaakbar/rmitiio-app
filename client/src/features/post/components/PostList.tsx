@@ -44,7 +44,7 @@ export default function PostList({
     );
   }
   if (status === "error") {
-    return <span>There is an error on fetching posts</span>;
+    return <span className="px-4">There is an error on fetching posts</span>;
   }
 
   return (

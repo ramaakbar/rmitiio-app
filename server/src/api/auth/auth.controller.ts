@@ -4,6 +4,7 @@ import prisma from "../../utils/prisma";
 import jwt, { Secret } from "jsonwebtoken";
 import { LoginInput, RegisterInput } from "./auth.schema";
 import { Prisma } from "@prisma/client";
+import { faker } from "@faker-js/faker";
 
 // $desc Register New User
 // @route POST /auth/register
@@ -25,6 +26,7 @@ export async function registerHandler(
         email,
         username,
         password: hashPass,
+        picture: faker.image.avatar(),
       },
       select: {
         id: true,

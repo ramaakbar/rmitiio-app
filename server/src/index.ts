@@ -25,11 +25,14 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 
-swaggerDocs(app);
-
 app.use("/api", routes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}/api`);
-  checkDbConnect();
-});
+const startServer = async () => {
+  await checkDbConnect();
+  swaggerDocs(app);
+  app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}/api`);
+  });
+};
+
+startServer();

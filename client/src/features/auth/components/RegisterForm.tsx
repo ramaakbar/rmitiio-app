@@ -52,7 +52,7 @@ export default function RegisterForm() {
         disabled={mutation.isLoading}
         className="rounded-md bg-grey-900 px-4 py-2 text-white hover:bg-grey-800 disabled:cursor-not-allowed"
       >
-        Register
+        {mutation.isLoading ? "Registering..." : "Register"}
       </button>
     </form>
   );

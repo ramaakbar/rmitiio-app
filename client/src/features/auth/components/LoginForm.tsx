@@ -36,7 +36,7 @@ export default function LoginForm() {
         disabled={mutation.isLoading}
         className="rounded-md bg-grey-900 px-4 py-2 text-white hover:bg-grey-800 disabled:cursor-not-allowed"
       >
-        Login
+        {mutation.isLoading ? "Logging in..." : "Login"}
       </button>
     </form>
   );
