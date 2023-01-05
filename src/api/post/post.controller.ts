@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../../utils/prisma";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import {
   CreatePostInput,
   DeletePostInput,
@@ -10,6 +11,8 @@ import {
   GetUserPostsInput,
   UpdatePostInput,
 } from "./post.schema";
+import { randomImgName } from "../../utils/randomizePicName";
+import { bucketName, bucketRegion, s3 } from "../../utils/s3Client";
 
 export async function getPostsHandler(
   req: Request<{}, {}, {}, GetPostsOffsetPaginateQuery["query"]>,
@@ -112,11 +115,30 @@ export async function createPostHandler(
   try {
     const user = req.user;
     const body = req.body;
+    const file = req.file;
+
+    const picExt = file?.originalname.split(".")[1];
+    const newPicName = `${randomImgName()}.${picExt}`;
+    const picUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${newPicName}`;
+
+    if (file) {
+      const pictureParams = {
+        Bucket: bucketName,
+        Key: newPicName,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+      };
+
+      const uploadPic = new PutObjectCommand(pictureParams);
+
+      await s3.send(uploadPic);
+    }
 
     const createdPost = await prisma.post.create({
       data: {
         userId: user.id,
         content: body.content,
+        picture: file ? picUrl : null,
       },
     });
     res.status(200).json({ data: createdPost });

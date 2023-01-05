@@ -1,6 +1,7 @@
 import express from "express";
 import validate from "../../middleware/validateResource";
 import verifyJWT from "../../middleware/verifyJWT";
+import multer from "multer";
 import {
   getPostsHandler,
   getPostsCursorHandler,
@@ -21,6 +22,9 @@ import {
 } from "./post.schema";
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage: storage });
 
 router.get("/posts", validate(getPostsOffsetPaginateSchema), getPostsHandler);
 router.get(
@@ -30,7 +34,8 @@ router.get(
 );
 router.post(
   "/posts",
-  [verifyJWT, validate(createPostSchema)],
+  // [verifyJWT, validate(createPostSchema)],
+  [verifyJWT, upload.single("picture")],
   createPostHandler
 );
 router.patch(

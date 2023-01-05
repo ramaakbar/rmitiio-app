@@ -1,4 +1,5 @@
 import express from "express";
+import multer from "multer";
 import validate from "../../middleware/validateResource";
 import verifyJWT from "../../middleware/verifyJWT";
 import {
@@ -15,6 +16,9 @@ import {
 } from "./comment.schema";
 
 const router = express.Router();
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage: storage });
 
 router.get(
   "/:postId",
@@ -23,7 +27,8 @@ router.get(
 );
 router.post(
   "/:postId",
-  [verifyJWT, validate(createCommentSchema)],
+  // [verifyJWT, validate(createCommentSchema)],
+  [verifyJWT, upload.single("picture")],
   createCommentHandler
 );
 router.patch(

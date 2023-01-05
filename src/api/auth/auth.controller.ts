@@ -111,7 +111,7 @@ export async function refreshHandler(req: Request, res: Response) {
     const cookies = req.cookies;
 
     if (!cookies?.refreshToken)
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Refresh Token Expired" });
 
     const refreshToken = cookies.refreshToken;
 

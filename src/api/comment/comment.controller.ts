@@ -1,6 +1,9 @@
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../../utils/prisma";
+import { randomImgName } from "../../utils/randomizePicName";
+import { bucketName, bucketRegion, s3 } from "../../utils/s3Client";
 import {
   CreateCommentInput,
   DeleteCommentInput,
@@ -55,6 +58,7 @@ export async function createCommentHandler(
   try {
     const user = req.user;
     const body = req.body;
+    const file = req.file;
     const postId = parseInt(req.params.postId);
 
     const userPost = await prisma.post.findFirst({
@@ -66,11 +70,29 @@ export async function createCommentHandler(
     if (!userPost)
       return res.status(404).json({ message: "Error, Could not find post" });
 
+    const picExt = file?.originalname.split(".")[1];
+    const newPicName = `${randomImgName()}.${picExt}`;
+    const picUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${newPicName}`;
+
+    if (file) {
+      const pictureParams = {
+        Bucket: bucketName,
+        Key: newPicName,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+      };
+
+      const uploadPic = new PutObjectCommand(pictureParams);
+
+      await s3.send(uploadPic);
+    }
+
     const createdComment = await prisma.comment.create({
       data: {
         userId: user.id,
         postId: postId,
         content: body.content,
+        picture: file ? picUrl : null,
       },
     });
     res.status(200).json({ data: createdComment });
