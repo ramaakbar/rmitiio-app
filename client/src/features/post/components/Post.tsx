@@ -19,6 +19,7 @@ export default function Post({ post }: PostProps) {
         src={post.user.picture ?? ""}
         alt=""
         className="h-10 w-10 rounded-full"
+        loading="lazy"
       />
       <div className="flex flex-col space-y-1">
         <div className="flex flex-row items-center space-x-1">
@@ -34,7 +35,12 @@ export default function Post({ post }: PostProps) {
           </span>
         </div>
         <div className="text-grey-900">{post.content}</div>
-        <img src={post.picture} alt={post.picture} className="rounded-md" />
+        <img
+          src={post.picture}
+          alt={post.picture}
+          className="rounded-md"
+          loading="lazy"
+        />
         <div>Like</div>
       </div>
     </Link>

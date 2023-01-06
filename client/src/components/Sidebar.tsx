@@ -1,27 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { logoutUserFn } from "../features/auth/authApi";
 import useAuth from "../features/auth/hooks/useAuth";
+import { useLogout } from "../features/auth/hooks/useLogout";
 import useAuthModalStore from "../features/auth/stores/useAuthModalStore";
 
 export default function Sidebar() {
   const openModal = useAuthModalStore((state) => state.openModal);
-  const { data: session, logout } = useAuth();
-  const mutation = useMutation({
-    mutationFn: logoutUserFn,
-    onSuccess: () => {
-      if (session) {
-        logout();
-        toast.success("Successfuly Logout");
-      } else {
-        toast.error("There was an error");
-      }
-    },
-    onError: (error: any) => {
-      toast.error(`There was an error, ${error.response.data.message}`);
-    },
-  });
+  const { data: session } = useAuth();
+  const mutation = useLogout();
 
   return (
     <aside className="col-span-1 hidden border-r sm:block">

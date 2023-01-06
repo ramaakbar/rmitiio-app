@@ -18,6 +18,8 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
     register,
     handleSubmit,
     reset,
+    setValue,
+    getValues,
     formState: { errors },
   } = useCustomForm<PostInput>(postSchema);
 
@@ -27,6 +29,7 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
     if (e.target.files) {
       const image = e.target.files[0];
       setPic(image);
+      setValue("picture", image);
     }
   };
 
@@ -37,9 +40,10 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
 
   const onSubmitHandle = (data: PostInput) => {
     const formPostData = new FormData();
+
     formPostData.append("content", data.content);
     if (data?.picture) {
-      formPostData.append("picture", data?.picture[0] ?? null);
+      formPostData.append("picture", data.picture ?? null);
     }
 
     if (token === undefined) {
@@ -53,7 +57,7 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
 
   return (
     <form
-      className="mb-5 flex w-full flex-col space-x-5 space-y-3 border-b px-4 pb-5"
+      className="mb-5 flex w-full flex-col space-y-3 border-b px-4 pb-5"
       onSubmit={handleSubmit(onSubmitHandle)}
     >
       <textarea
@@ -84,18 +88,19 @@ export default function PostForm({ token, mutation, label }: PostFormProps) {
           >
             <PhotoIcon className="h-6 w-6" />
           </label>
-          <input
-            {...register("picture")}
-            id="picture"
-            type="file"
-            accept="image/*"
-            onChange={loadImagePreview}
-            className="hidden"
-          />
+
           <span className="text-sm text-red-500">
             {errors?.picture?.message?.toString()}
           </span>
         </div>
+        <input
+          {...register("picture")}
+          id="picture"
+          type="file"
+          accept="image/*"
+          onChange={loadImagePreview}
+          className="hidden"
+        />
         <button
           type="submit"
           disabled={mutation.isLoading}

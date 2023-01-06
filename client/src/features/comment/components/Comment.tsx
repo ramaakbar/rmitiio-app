@@ -13,6 +13,7 @@ export default function Comment({ comment }: CommentProp) {
         src={comment.user.picture ?? ""}
         alt=""
         className="h-10 w-10 rounded-full"
+        loading="lazy"
       />
       <div className="flex flex-col space-y-1">
         <div className="flex flex-row items-center space-x-1">
@@ -32,6 +33,7 @@ export default function Comment({ comment }: CommentProp) {
           src={comment.picture}
           alt={comment.picture}
           className="rounded-md"
+          loading="lazy"
         />
         <div>Like</div>
       </div>

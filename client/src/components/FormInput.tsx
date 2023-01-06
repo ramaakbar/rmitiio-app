@@ -18,7 +18,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           {...props}
           type={type}
           ref={ref}
-          className="block w-full rounded-md border border-gray-300 px-2 py-2 text-sm text-gray-700"
+          className="block w-full rounded-md border border-grey-300 px-2 py-2 text-sm text-grey-700"
         />
         <span className="text-sm text-red-500">{error}</span>
       </fieldset>
