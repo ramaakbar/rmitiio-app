@@ -75,6 +75,11 @@ export async function createCommentHandler(
     const picUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${newPicName}`;
 
     if (file) {
+      if (file.size >= 1000000) {
+        return res.status(400).json({
+          message: "file is too large",
+        });
+      }
       const pictureParams = {
         Bucket: bucketName,
         Key: newPicName,

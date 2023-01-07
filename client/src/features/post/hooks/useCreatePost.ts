@@ -15,7 +15,7 @@ export const useCreatePost = (token: string | undefined) => {
       toast.success("Post created");
     },
     onError: (error: any, _) => {
-      let msg = "error";
+      let msg = "server error";
 
       if (error.response.data.message === "Access Token Expired") {
         msg = `${error.response.data.message}, please refresh the page`;
@@ -23,7 +23,7 @@ export const useCreatePost = (token: string | undefined) => {
         logout();
         msg = `${error.response.data.message} refresh token and access token expired, please login again`;
       } else {
-        msg = "server error";
+        msg = error.response.data.message;
       }
       toast.error(`There was an error, ${msg}`);
     },

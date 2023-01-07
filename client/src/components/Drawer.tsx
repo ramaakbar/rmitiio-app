@@ -84,7 +84,13 @@ export default function Drawer() {
                       <button
                         onClick={() => {
                           toggle(false);
-                          openModal("Login");
+                          setTimeout(() => {
+                            requestAnimationFrame(() => {
+                              requestAnimationFrame(() => {
+                                openModal("Login");
+                              });
+                            });
+                          }, 300);
                         }}
                         className="px-4 py-2 text-start text-grey-700 hover:text-grey-800"
                       >
@@ -93,7 +99,13 @@ export default function Drawer() {
                       <button
                         onClick={() => {
                           toggle(false);
-                          openModal("Register");
+                          setTimeout(() => {
+                            requestAnimationFrame(() => {
+                              requestAnimationFrame(() => {
+                                openModal("Register");
+                              });
+                            });
+                          }, 300);
                         }}
                         className="px-4 py-2 text-start text-grey-700 hover:text-grey-800"
                       >
@@ -104,12 +116,16 @@ export default function Drawer() {
                   {session && (
                     <>
                       <button
-                        onClick={() => mutation.mutate()}
+                        onClick={() => {
+                          toggle(false);
+                          mutation.mutate();
+                        }}
                         className="px-4 py-2 text-start text-grey-700 hover:text-grey-800"
                       >
                         Logout
                       </button>
                       <Link
+                        onClick={() => toggle(false)}
                         to={`/${session.username}`}
                         className="px-4 py-2 text-grey-700 hover:text-grey-800"
                       >

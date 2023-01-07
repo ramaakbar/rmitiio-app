@@ -22,9 +22,11 @@ export const useCreateComment = (
       let msg;
       if (error.response.data.message === "Access Token Expired") {
         msg = `${error.response.data.message}, please refresh the page`;
-      } else {
+      } else if (error.response.data.message === "Refresh Token Expired") {
         logout();
         msg = `${error.response.data.message} refresh token and access token expired, please login again`;
+      } else {
+        msg = error.response.data.message;
       }
       toast.error(`There was an error, ${msg}`);
     },
