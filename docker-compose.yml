@@ -1,16 +1,16 @@
 version: "3.7"
 services:
-  db:
-    image: postgres
-    ports:
-      - 5435:5432
-    expose:
-      - "5435"
-    volumes:
-      - data:/data/db
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "password"
+  # db:
+  #   image: postgres
+  #   ports:
+  #     - 5435:5432
+  #   expose:
+  #     - "5435"
+  #   volumes:
+  #     - data:/data/db
+  #   environment:
+  #     POSTGRES_USER: "postgres"
+  #     POSTGRES_PASSWORD: "password"
 
   api:
     restart: unless-stopped
