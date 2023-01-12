@@ -14,7 +14,7 @@ services:
 
   api:
     restart: unless-stopped
-    env_file: ./server/.env
+    env_file: .env
     build: ./server
     ports:
       - "4000:4000"
