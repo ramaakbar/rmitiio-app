@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import { useReloadPic } from "../../../hooks/useReloadPic";
 import { CommentType } from "../commentTypes";
 
 type CommentProp = {
@@ -7,6 +8,7 @@ type CommentProp = {
 };
 
 export default function Comment({ comment }: CommentProp) {
+  const { img, reloadSrc } = useReloadPic(comment.picture);
   return (
     <div className="flex flex-row space-x-3 rounded-md bg-grey-50 px-4 py-3 hover:bg-grey-100">
       <img
@@ -30,10 +32,11 @@ export default function Comment({ comment }: CommentProp) {
         </div>
         <div className="text-grey-900">{comment.content}</div>
         <img
-          src={comment.picture}
+          src={img}
           alt={comment.picture}
           className="rounded-md"
           loading="lazy"
+          onError={reloadSrc}
         />
         <div>Like</div>
       </div>

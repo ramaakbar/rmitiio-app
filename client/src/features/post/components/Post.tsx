@@ -2,6 +2,8 @@ import dayjs from "dayjs";
 import { PostType } from "../postTypes";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useReloadPic } from "../../../hooks/useReloadPic";
 
 type PostProps = {
   post: PostType;
@@ -10,6 +12,8 @@ type PostProps = {
 dayjs.extend(relativeTime);
 
 export default function Post({ post }: PostProps) {
+  const { img, reloadSrc } = useReloadPic(post.picture);
+
   return (
     <Link
       to={"/posts/" + post.id}
@@ -36,10 +40,11 @@ export default function Post({ post }: PostProps) {
         </div>
         <div className="text-grey-900">{post.content}</div>
         <img
-          src={post.picture}
+          src={img}
           alt={post.picture}
           className="rounded-md"
           loading="lazy"
+          onError={reloadSrc}
         />
         <div>Like</div>
       </div>

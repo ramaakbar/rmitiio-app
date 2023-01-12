@@ -1,9 +1,8 @@
-import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../../utils/prisma";
 import { randomImgName } from "../../utils/randomizePicName";
-import { bucketName, bucketRegion, s3 } from "../../utils/s3Client";
+import { bucketName, minioClient } from "../../utils/s3Client";
 import {
   CreateCommentInput,
   DeleteCommentInput,
@@ -72,7 +71,7 @@ export async function createCommentHandler(
 
     const picExt = file?.originalname.split(".")[1];
     const newPicName = `${randomImgName()}.${picExt}`;
-    const picUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${newPicName}`;
+    const picUrl = `https://minio.ramaakbar.xyz/${bucketName}/${newPicName}`;
 
     if (file) {
       if (file.size >= 1000000) {
@@ -80,16 +79,21 @@ export async function createCommentHandler(
           message: "file is too large",
         });
       }
-      const pictureParams = {
-        Bucket: bucketName,
-        Key: newPicName,
-        Body: file.buffer,
-        ContentType: file.mimetype,
-      };
-
-      const uploadPic = new PutObjectCommand(pictureParams);
-
-      await s3.send(uploadPic);
+      const metaData = { "Content-Type": file.mimetype };
+      minioClient.putObject(
+        bucketName ?? "",
+        newPicName,
+        file.buffer,
+        file.size,
+        metaData,
+        function (err: any) {
+          if (err) {
+            return res.status(500).json({
+              message: "error on saving image",
+            });
+          }
+        }
+      );
     }
 
     const createdComment = await prisma.comment.create({

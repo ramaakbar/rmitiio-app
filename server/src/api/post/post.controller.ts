@@ -1,7 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
 import prisma from "../../utils/prisma";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import {
   CreatePostInput,
   DeletePostInput,
@@ -12,7 +11,7 @@ import {
   UpdatePostInput,
 } from "./post.schema";
 import { randomImgName } from "../../utils/randomizePicName";
-import { bucketName, bucketRegion, s3 } from "../../utils/s3Client";
+import { bucketName, minioClient } from "../../utils/s3Client";
 
 export async function getPostsHandler(
   req: Request<{}, {}, {}, GetPostsOffsetPaginateQuery["query"]>,
@@ -119,7 +118,7 @@ export async function createPostHandler(
 
     const picExt = file?.originalname.split(".")[1];
     const newPicName = `${randomImgName()}.${picExt}`;
-    const picUrl = `https://${bucketName}.s3.${bucketRegion}.amazonaws.com/${newPicName}`;
+    const picUrl = `https://minio.ramaakbar.xyz/${bucketName}/${newPicName}`;
 
     if (file) {
       if (file.size >= 1000000) {
@@ -127,16 +126,23 @@ export async function createPostHandler(
           message: "file is too large",
         });
       }
-      const pictureParams = {
-        Bucket: bucketName,
-        Key: newPicName,
-        Body: file.buffer,
-        ContentType: file.mimetype,
-      };
 
-      const uploadPic = new PutObjectCommand(pictureParams);
+      const metaData = { "Content-Type": file.mimetype };
 
-      await s3.send(uploadPic);
+      const uploaded = minioClient.putObject(
+        bucketName ?? "",
+        newPicName,
+        file.buffer,
+        file.size,
+        metaData,
+        function (err: any) {
+          if (err) {
+            return res.status(500).json({
+              message: "error on saving image",
+            });
+          }
+        }
+      );
     }
 
     const createdPost = await prisma.post.create({
