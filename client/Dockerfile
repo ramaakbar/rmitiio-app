@@ -2,11 +2,11 @@ FROM node
 
 WORKDIR /app
 
-COPY package.json .
+COPY ./client/package.json .
 
 RUN npm install
 
-COPY . .
+COPY ./client .
 
 # development
 # EXPOSE 5173
