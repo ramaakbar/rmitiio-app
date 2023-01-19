@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import Layout from "./components/Layout";
 import LoadingPage from "./pages/LoadingPage";
 import Home from "./pages/Home";
+import AuthModal from "./features/auth/components/AuthModal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +67,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
       <ToastContainer autoClose={4000} theme="light" position="top-right" />
+      <AuthModal />
     </QueryClientProvider>
   </React.StrictMode>
 );

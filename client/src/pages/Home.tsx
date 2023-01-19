@@ -1,10 +1,8 @@
-import AuthModal from "../features/auth/components/AuthModal";
 import useAuth from "../features/auth/hooks/useAuth";
 import PostForm from "../features/post/components/PostForm";
 import PostList from "../features/post/components/PostList";
 import { useCreatePost } from "../features/post/hooks/useCreatePost";
 import { usePosts } from "../features/post/hooks/usePosts";
-import { PostType } from "../features/post/postTypes";
 
 export default function Home() {
   const {
@@ -36,8 +34,6 @@ export default function Home() {
         hasNextPage={hasNextPage}
         isFetchingNextPage={isFetchingNextPage}
       />
-
-      <AuthModal />
     </>
   );
 }
