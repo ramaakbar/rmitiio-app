@@ -2,7 +2,7 @@ import axios from "axios";
 import { PostsResponse } from "../post/postTypes";
 import { UserResponse } from "./userTypes";
 
-const BASE_URL = "http://127.0.0.1:4000/api";
+const BASE_URL = "https://rmitiio-api.ramaakbar.xyz/api";
 
 const profileApi = axios.create({
   baseURL: BASE_URL,

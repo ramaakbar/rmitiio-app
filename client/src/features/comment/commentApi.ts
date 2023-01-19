@@ -3,7 +3,7 @@ import { refreshAccessTknFn } from "../auth/authApi";
 import { PostInput } from "../post/schemas/postSchema";
 import { CommentsResponse, CommentType } from "./commentTypes";
 
-const BASE_URL = "http://127.0.0.1:4000/api/comments";
+const BASE_URL = "https://rmitiio-api.ramaakbar.xyz/api/comments";
 
 const commentApi = axios.create({
   baseURL: BASE_URL,

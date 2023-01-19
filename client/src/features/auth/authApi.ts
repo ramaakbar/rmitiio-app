@@ -4,7 +4,7 @@ import { LoginResponse, UserType } from "./authTypes";
 import { LoginInput } from "./schemas/loginSchema";
 import { RegisterInputWithoutPassConf } from "./schemas/registerSchema";
 
-const BASE_URL = "http://127.0.0.1:4000/api/auth";
+const BASE_URL = "https://rmitiio-api.ramaakbar.xyz/api/auth";
 
 const authApi = axios.create({
   baseURL: BASE_URL,

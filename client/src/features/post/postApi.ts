@@ -3,7 +3,7 @@ import { refreshAccessTknFn } from "../auth/authApi";
 import { PostInput } from "./schemas/postSchema";
 import { PostResponse, PostsResponse, PostType } from "./postTypes";
 
-const BASE_URL = "http://127.0.0.1:4000/api/posts";
+const BASE_URL = "https://rmitiio-api.ramaakbar.xyz/api/posts";
 
 const postApi = axios.create({
   baseURL: BASE_URL,
