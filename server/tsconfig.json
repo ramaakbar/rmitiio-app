@@ -5,7 +5,10 @@
     "strict": true,
     "lib": ["esnext"],
     "esModuleInterop": true,
+    "module": "CommonJS",
+    "skipLibCheck": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./src/types"]
+    "typeRoots": ["./src/types"],
+    "target": "ES2016"
   }
 }

@@ -3,6 +3,7 @@ import authRoutes from "./api/auth/auth.route";
 import postRoutes from "./api/post/post.route";
 import userRoutes from "./api/user/user.route";
 import commentRoutes from "./api/comment/comment.route";
+import repoRoutes from "./api/repo/repo.route";
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.use("/auth", authRoutes);
 router.use(postRoutes);
 router.use("/users", userRoutes);
 router.use("/comments", commentRoutes);
+router.use("/repos", repoRoutes);
 
 router.all("*", (req: Request, res: Response) => {
   res.status(404).json({ message: "Route Not Found" });
