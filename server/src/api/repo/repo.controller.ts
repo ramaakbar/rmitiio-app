@@ -166,8 +166,8 @@ async function getPinnedRepo(username: string) {
       website: website || undefined,
       language: language || undefined,
       languageColor: languageColor || undefined,
-      stars: stars || 0,
-      forks: forks || 0,
+      stars: +stars || 0,
+      forks: +forks || 0,
     };
   }
   return result;
