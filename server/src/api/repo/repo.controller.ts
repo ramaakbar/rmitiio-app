@@ -106,7 +106,7 @@ function getImage(repo: string) {
 
 function getStars($: any, item: cheerio.Element) {
   try {
-    return parseInt((item).find('a[href$="/stargazers"]').text().trim());
+    return parseInt($(item).find('a[href$="/stargazers"]').text().trim());
   } catch (error) {
     return 0;
   }
