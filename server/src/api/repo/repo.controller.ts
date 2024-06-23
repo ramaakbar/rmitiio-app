@@ -106,7 +106,7 @@ function getImage(repo: string) {
 
 function getStars($: any, item: cheerio.Element) {
   try {
-    return $(item).find('a[href$="/stargazers"]').text().trim();
+    return parseInt((item).find('a[href$="/stargazers"]').text().trim());
   } catch (error) {
     return 0;
   }
@@ -114,7 +114,7 @@ function getStars($: any, item: cheerio.Element) {
 
 function getForks($: any, item: cheerio.Element) {
   try {
-    return $(item).find('a[href$="/network/members"]').text().trim();
+    return parseInt($(item).find('a[href$="/forks"]').text().trim());
   } catch (error) {
     return 0;
   }
@@ -138,7 +138,7 @@ function getLanguageColor($: any, item: cheerio.Element) {
 
 async function getPinnedRepo(username: string) {
   const $ = await getHtml(`https://github.com/${username}`);
-  const pinned = $(".pinned-item-list-item.public").toArray();
+  const pinned = $(".pinned-item-list-item").toArray();
 
   if (!pinned || pinned.length === 0) return [];
 
