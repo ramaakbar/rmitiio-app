@@ -1,21 +1,21 @@
-FROM node
+FROM node:22-alpine AS builder
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
-WORKDIR /app
-
-COPY ./client/package.json .
-
-RUN npm install
+WORKDIR /usr/app
 
 COPY ./client .
 
-# development
-# EXPOSE 5173
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install
+RUN pnpm build
 
-# CMD ["npm", "run", "dev"]
+FROM nginx:alpine AS runner
+WORKDIR /usr/share/nginx/html
 
-# production
-EXPOSE 4173
+COPY --from=builder /usr/app/dist .
+COPY --from=builder /usr/app/nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN npm run build
+EXPOSE 3000
 
-CMD ["npm", "run", "preview"]
+CMD ["nginx", "-g", "daemon off;"]
